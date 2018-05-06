@@ -18,7 +18,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
   var mapView: GMSMapView!
   let mapKey = "AIzaSyD1F5N_CVO33hJlbq73xt1Jfjuw4UsLy0o"
   var line: GMSPolyline!
-  let UCBLocation = CLLocationCoordinate2D(latitude: -15.86516, longitude:-48.029895 )
   
   override func loadView() {
     super.loadView()
@@ -28,7 +27,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     mapView.isMyLocationEnabled = true
     mapView.camera = camera
     view = mapView
-  
+    
   }
   
   override func viewDidLoad() {
@@ -37,7 +36,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     locationManager.requestWhenInUseAuthorization()
     directRide()
   }
-
+  
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
     // Dispose of any resources that can be recreated.
@@ -45,25 +44,35 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
   
   func directRide() {
     let originString = "\(indieWareHouse.latitude),\(indieWareHouse.longitude)"
-    let destination = "-15.86,-48.02"
+    let destination = "-15.8651602,-48.0298947"
     
-    Alamofire.request("https://maps.googleapis.com/maps/api/directions/json?origin=\(originString)&destination=\(destination)&sensor=true").responseJSON { (response) in
+    Alamofire.request("https://maps.googleapis.com/maps/api/directions/json?origin=\(originString)&destination=\(destination)&sensor=true&mode=walking&alternatives=true").responseJSON { (response) in
       
       if let json = response.result.value as? [String: Any] {
-
-          let array = json["routes"] as! NSArray
-          let firstRoute = array[0] as! NSDictionary
-          let polyline = firstRoute["overview_polyline"] as! NSDictionary
-          let points = polyline["points"] as! String
         
-          let path = GMSPath(fromEncodedPath: points)
-          self.line = GMSPolyline(path: path)
-          self.line.map = self.mapView
-          self.line.strokeWidth = 4.0
+        let routes = json["routes"] as! NSArray
+        
+        for route in routes {
+          if let routeDict = route as? NSDictionary {
+            let polyline = routeDict["overview_polyline"] as! NSDictionary
+            let points = polyline["points"] as! String
+            print(points)
+            
+            let path = GMSPath(fromEncodedPath: points)
+            self.line = GMSPolyline(path: path)
+            self.line.map = self.mapView
+            self.line.strokeWidth = 4.0
+          } else {
+            print("lol wat 💁🏻‍♀️")
+          }
+        }
+          
+//        let firstRoute = routes[0] as! NSDictionary
+        
         
         let marker = GMSMarker()
-        marker.position = CLLocationCoordinate2D(latitude: -15.86,
-                                                 longitude: -48.02)
+        marker.position = CLLocationCoordinate2D(latitude: -15.8651602,
+                                                 longitude: -48.0298947)
         marker.title = "Destination"
         marker.snippet = "UCB"
         marker.map = self.mapView
