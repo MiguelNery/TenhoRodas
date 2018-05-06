@@ -12,9 +12,11 @@
 		38BCFE73209E825F00EE380C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 38BCFE71209E825F00EE380C /* Main.storyboard */; };
 		38BCFE75209E826100EE380C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 38BCFE74209E826100EE380C /* Assets.xcassets */; };
 		38BCFE78209E826100EE380C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 38BCFE76209E826100EE380C /* LaunchScreen.storyboard */; };
+		CF8F12CF60852D4F04CF97E2 /* Pods_TenhoRodas.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D697D9DCB7366D3C23EC270 /* Pods_TenhoRodas.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2D697D9DCB7366D3C23EC270 /* Pods_TenhoRodas.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TenhoRodas.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		38BCFE6A209E825F00EE380C /* TenhoRodas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TenhoRodas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		38BCFE6D209E825F00EE380C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		38BCFE6F209E825F00EE380C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -22,6 +24,8 @@
 		38BCFE74209E826100EE380C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		38BCFE77209E826100EE380C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		38BCFE79209E826100EE380C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6C7E853916550187619D2B7F /* Pods-TenhoRodas.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TenhoRodas.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TenhoRodas/Pods-TenhoRodas.debug.xcconfig"; sourceTree = "<group>"; };
+		AE16828D59F6FD69665D1482 /* Pods-TenhoRodas.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TenhoRodas.release.xcconfig"; path = "Pods/Target Support Files/Pods-TenhoRodas/Pods-TenhoRodas.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +33,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF8F12CF60852D4F04CF97E2 /* Pods_TenhoRodas.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,6 +45,8 @@
 			children = (
 				38BCFE6C209E825F00EE380C /* TenhoRodas */,
 				38BCFE6B209E825F00EE380C /* Products */,
+				91DA519262B46AEC1850F3C3 /* Pods */,
+				CF1688487BB2BEF5E0AC722F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -64,6 +71,23 @@
 			path = TenhoRodas;
 			sourceTree = "<group>";
 		};
+		91DA519262B46AEC1850F3C3 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6C7E853916550187619D2B7F /* Pods-TenhoRodas.debug.xcconfig */,
+				AE16828D59F6FD69665D1482 /* Pods-TenhoRodas.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		CF1688487BB2BEF5E0AC722F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2D697D9DCB7366D3C23EC270 /* Pods_TenhoRodas.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -71,9 +95,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 38BCFE7C209E826100EE380C /* Build configuration list for PBXNativeTarget "TenhoRodas" */;
 			buildPhases = (
+				AE8EB636F1C4C333CB105ADB /* [CP] Check Pods Manifest.lock */,
 				38BCFE66209E825F00EE380C /* Sources */,
 				38BCFE67209E825F00EE380C /* Frameworks */,
 				38BCFE68209E825F00EE380C /* Resources */,
+				9E5E566996C7BC4ACD997E52 /* [CP] Embed Pods Frameworks */,
+				182A8243623297469563EE9A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -129,6 +156,62 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		182A8243623297469563EE9A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-TenhoRodas/Pods-TenhoRodas-resources.sh",
+				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
+				"${PODS_ROOT}/GooglePlaces/Frameworks/GooglePlaces.framework/Resources/GooglePlaces.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMaps.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GooglePlaces.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TenhoRodas/Pods-TenhoRodas-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9E5E566996C7BC4ACD997E52 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TenhoRodas/Pods-TenhoRodas-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AE8EB636F1C4C333CB105ADB /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TenhoRodas-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		38BCFE66209E825F00EE380C /* Sources */ = {
@@ -278,15 +361,13 @@
 		};
 		38BCFE7D209E826100EE380C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6C7E853916550187619D2B7F /* Pods-TenhoRodas.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9KAJM7V6T4;
 				INFOPLIST_FILE = TenhoRodas/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = dream.TenhoRodas;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -296,15 +377,13 @@
 		};
 		38BCFE7E209E826100EE380C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AE16828D59F6FD69665D1482 /* Pods-TenhoRodas.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9KAJM7V6T4;
 				INFOPLIST_FILE = TenhoRodas/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = dream.TenhoRodas;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
