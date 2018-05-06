@@ -58,17 +58,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
           if let routeDict = route as? NSDictionary {
             let polyline = routeDict["overview_polyline"] as! NSDictionary
             let points = polyline["points"] as! String
-            print(points)
             
             let path = GMSPath(fromEncodedPath: points)
             self.line = GMSPolyline(path: path)
             self.line.strokeWidth = 4.0
             
             for ignored in self.ignoredPoints {
-              if !GMSGeometryContainsLocation(ignored, path!, true) {
+              if !GMSGeometryIsLocationOnPathTolerance(ignored, path!, false, 5) {
                 self.line.map = self.mapView
               } else {
-                print("pode pintar 👨‍✈️")
+                print("não pode pintar 👨‍✈️")
               }
             }
           } else {
@@ -80,8 +79,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         
         let marker = GMSMarker()
-        marker.position = CLLocationCoordinate2D(latitude: -15.8651602,
-                                                 longitude: -48.0298947)
+//        marker.position = CLLocationCoordinate2D(latitude: -15.8651602,
+//                                                 longitude: -48.0298947)
+        marker.position = self.ignoredPoints.first!
         marker.title = "Destination"
         marker.snippet = "UCB"
         marker.map = self.mapView
@@ -89,6 +89,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     }
   }
   
+//  func addPinButton() {
+//    let button = UIButton(frame: CGRect(origin: <#T##CGPoint#>, size: <#T##CGSize#>))
+//  }
+//
   func centerCamera() {
     guard let location = mapView.myLocation else {
       fatalError("Could not get user location")
