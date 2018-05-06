@@ -123,9 +123,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     reportBtn.translatesAutoresizingMaskIntoConstraints = false
     reportBtn.widthAnchor.constraint(equalTo: margins.widthAnchor, multiplier: 0.6).isActive = true
-    reportBtn.heightAnchor.constraint(equalToConstant: 300)
+    reportBtn.heightAnchor.constraint(equalToConstant: 100)
     reportBtn.bottomAnchor.constraint(equalTo: margins.bottomAnchor, constant: -100).isActive = true
-    reportBtn.leftAnchor.constraint(equalTo: margins.leftAnchor, constant: -20)
+    reportBtn.leftAnchor.constraint(equalTo: margins.leftAnchor, constant: 20).isActive = true
 //    reportBtn.centerXAnchor.constraint(equalTo: margins.centerXAnchor).isActive = true
     
   }
@@ -135,7 +135,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     cancelReportBtn.setTitle("Cancel", for: .normal)
     cancelReportBtn.setTitleColor(UIColor.white, for: .normal)
     cancelReportBtn.backgroundColor = UIColor.red
-    cancelReportBtn.frame = CGRect(x: view.frame.width * 0.8, y: -view.frame.height * 0.8, width: 120, height: 100)
+    cancelReportBtn.frame = CGRect(x: view.frame.width * 0.8, y: -view.frame.height * 0.8, width: 120, height: 150)
     cancelReportBtn.addTarget(self, action: #selector(pressedCancel), for: .touchUpInside)
     
     
