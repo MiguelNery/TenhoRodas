@@ -18,6 +18,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
   var mapView: GMSMapView!
   let mapKey = "AIzaSyD1F5N_CVO33hJlbq73xt1Jfjuw4UsLy0o"
   var line: GMSPolyline!
+  let ignoredPoints = [CLLocationCoordinate2D(latitude: -15.811014, longitude: -47.987146
+)]
   
   override func loadView() {
     super.loadView()
@@ -60,8 +62,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             
             let path = GMSPath(fromEncodedPath: points)
             self.line = GMSPolyline(path: path)
-            self.line.map = self.mapView
             self.line.strokeWidth = 4.0
+            
+            for ignored in self.ignoredPoints {
+              if !GMSGeometryContainsLocation(ignored, path!, true) {
+                self.line.map = self.mapView
+              } else {
+                print("pode pintar 👨‍✈️")
+              }
+            }
           } else {
             print("lol wat 💁🏻‍♀️")
           }
