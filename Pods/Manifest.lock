@@ -10,19 +10,25 @@ PODS:
     - GooglePlaces (= 2.6.0)
   - GooglePlaces (2.6.0):
     - GoogleMaps/Base (= 2.6.0)
+  - UberCore (0.9.0)
+  - UberRides (0.9.0):
+    - UberCore
 
 DEPENDENCIES:
   - Alamofire
   - GoogleMaps
   - GooglePlacePicker
   - GooglePlaces
+  - UberRides (~> 0.9)
 
 SPEC CHECKSUMS:
   Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
   GoogleMaps: 42f91c68b7fa2f84d5c86597b18ceb99f5414c7f
   GooglePlacePicker: e4488625effb006f59de49e14b7a603e463e4261
   GooglePlaces: f6ddf33b75cef69e888907d9947c57198ed845f3
+  UberCore: c734f82e2152dcae52beaefc3bdf7e40186af821
+  UberRides: 90b7d6f60d01f3afa6e797f58f3ccbde824f90bf
 
-PODFILE CHECKSUM: fcd618ea0b9822633c4fdb4adc8eda153f394a56
+PODFILE CHECKSUM: 5405a0a325e23fed406927954d56787f4c73c569
 
 COCOAPODS: 1.4.0
