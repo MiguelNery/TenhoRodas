@@ -31,6 +31,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
   var rideBtn: RideRequestButton!
   var ignoredPoints = [CLLocationCoordinate2D(latitude: -15.811014, longitude: -47.987146
 )]
+  lazy var reportCenterX = reportBtn.centerXAnchor.constraint(equalTo: self.view.layoutMarginsGuide.centerXAnchor)
+  
+  lazy var reportWidth = reportBtn.widthAnchor.constraint(equalToConstant: 366)
+  
+  lazy var reportHeight = reportBtn.heightAnchor.constraint(equalToConstant: 122)
+  
+  lazy var markLeading = reportBtn.leadingAnchor.constraint(equalTo: self.view.layoutMarginsGuide.trailingAnchor, constant: -350)
+  
+  lazy var markWidth = reportBtn.widthAnchor.constraint(equalToConstant: 208)
+  
+  lazy var markHeight = reportBtn.heightAnchor.constraint(equalToConstant: 77)
   
   override func loadView() {
     super.loadView()
@@ -52,7 +63,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     setReportBtn()
     cancelReport()
     addSearchRouteButton()
-//    setRideBtn()
   }
   
   override func didReceiveMemoryWarning() {
@@ -80,7 +90,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             self.line = GMSPolyline(path: path)
             self.line.strokeWidth = 4.0
             
-
             for ignored in self.ignoredPoints {
 
               if !GMSGeometryIsLocationOnPathTolerance(ignored, path!, false, 5) {
@@ -88,13 +97,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
               } else {
                 self.line.strokeColor = .red
                 break
-//                let marker = GMSMarker()
-//                marker.position = CLLocationCoordinate2D(latitude: -15.811014,
-//                                                         longitude: -47.987146)
-//                marker.title = "Destination"
-//                marker.snippet = "UCB"
-//                marker.map = self.mapView
-
               }
             }
             self.line.map = self.mapView
@@ -120,6 +122,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     builder.dropoffNickname = "Awesome Place"
     rideBtn.rideParameters = builder.build()
   }
+  
   func setRideBtn() {
     self.rideBtn = RideRequestButton()
     rideBtn.center = view.center
@@ -139,72 +142,79 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
   func setReportBtn() {
     
     reportBtn = UIButton(type: .custom)
-    reportBtn.setTitle("Report", for: .normal)
-    reportBtn.setTitleColor(UIColor.white, for: .normal)
-    reportBtn.backgroundColor = UIColor.blue
-    reportBtn.frame = CGRect(x: view.frame.width * 0.8, y: -view.frame.height * 0.8, width: 120, height: 100)
+    reportBtn.setImage(UIImage(named: "butao-reportar"), for: .normal)
     reportBtn.addTarget(self, action: #selector(pressed(sender:)), for: .touchUpInside)
+    reportBtn.contentMode = .scaleAspectFit
 
     self.view.addSubview(reportBtn)
     
     let margins = self.mapView.layoutMarginsGuide
     
     reportBtn.translatesAutoresizingMaskIntoConstraints = false
-    reportBtn.widthAnchor.constraint(equalTo: margins.widthAnchor, multiplier: 0.6).isActive = true
-    reportBtn.heightAnchor.constraint(equalToConstant: 100)
-    reportBtn.bottomAnchor.constraint(equalTo: margins.bottomAnchor, constant: -100).isActive = true
-    reportBtn.leftAnchor.constraint(equalTo: margins.leftAnchor, constant: 20).isActive = true
-//    reportBtn.centerXAnchor.constraint(equalTo: margins.centerXAnchor).isActive = true
-    
+    self.reportWidth.isActive = true
+    self.reportHeight.isActive = true
+    reportBtn.bottomAnchor.constraint(equalTo: margins.bottomAnchor, constant: -30).isActive = true
+    self.reportCenterX.isActive = true
   }
-  
+
   func cancelReport() {
     cancelReportBtn = UIButton(type: .custom)
-    cancelReportBtn.setTitle("Cancel", for: .normal)
-    cancelReportBtn.setTitleColor(UIColor.white, for: .normal)
-    cancelReportBtn.backgroundColor = UIColor.red
-    cancelReportBtn.frame = CGRect(x: view.frame.width * 0.8, y: -view.frame.height * 0.8, width: 120, height: 150)
+    cancelReportBtn.setImage(#imageLiteral(resourceName: "botao-check"), for: .normal)
     cancelReportBtn.addTarget(self, action: #selector(pressedCancel), for: .touchUpInside)
+    cancelReportBtn.isHidden = true
     
     
-    self.view.addSubview(cancelReportBtn)
+    self.view.insertSubview(cancelReportBtn, at: 2)
+//    addSubview(cancelReportBtn)
     
     let margins = self.mapView.layoutMarginsGuide
     cancelReportBtn.translatesAutoresizingMaskIntoConstraints = false
     
+    cancelReportBtn.widthAnchor.constraint(equalToConstant: 100).isActive = true
+    cancelReportBtn.heightAnchor.constraint(equalToConstant: 77).isActive = true
+    
     cancelReportBtn.bottomAnchor.constraint(equalTo: margins.bottomAnchor,
-                                         constant: -100).isActive = true
-    cancelReportBtn.rightAnchor.constraint(equalTo: margins.rightAnchor,
-                                       constant: -20).isActive = true
+                                         constant: -30).isActive = true
+    cancelReportBtn.trailingAnchor.constraint(equalTo: margins.trailingAnchor,
+                                       constant: -10).isActive = true
   }
   
   @objc func pressed(sender: UIButton!) {
     guard showMarker else {
       showMarker = true
       placeMarkerOnCenter(centerMapCoordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
+      reportBtn.setImage(#imageLiteral(resourceName: "botao-marcar"), for: .normal)
+      reportCenterX.isActive = false
+      reportWidth.isActive = false
+      reportHeight.isActive = false
+      markLeading.isActive = true
+      markWidth.isActive = true
+      markHeight.isActive = true
+      
+      cancelReportBtn.isHidden = false
       return
     }
     
 
     let marker = createMarker(latitude: latitude, longitude: longitude)
     self.ignoredPoints.append(marker.position)
-//
-//    for locView in self.view.subviews {
-//      if locView.isKind(of: UIButton.self){
-//        locView.removeFromSuperview()
-//      }
-//    }
-
   }
 
   @objc func pressedCancel() {
     showMarker = false
     centralMarker.map = nil
-//    for locView in self.view.subviews {
-//      if locView.isKind(of: UIButton.self){
-//        locView.removeFromSuperview()
-//      }
-//    }
+    
+    cancelReportBtn.isHidden = true
+    
+    reportBtn.setImage(UIImage(named: "butao-reportar"), for: .normal)
+    
+    markWidth.isActive = false
+    markHeight.isActive = false
+    markLeading.isActive = false
+    
+    reportCenterX.isActive = true
+    reportWidth.isActive = true
+    reportHeight.isActive = true
   }
   
   func createMarker(latitude: Double, longitude: Double) -> GMSMarker {
@@ -217,18 +227,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
   
   func addSearchRouteButton() {
     let button = UIButton(type: .custom)
-    button.frame = CGRect(origin: .zero, size: CGSize(width: 150, height: 100))
-    button.setTitle("Search Route", for: .normal)
-    button.setTitleColor(.black, for: .normal)
-    button.backgroundColor = .yellow
+    
+    button.setImage(UIImage(named: "butao-where-to-go"), for: .normal)
     
     self.mapView.addSubview(button)
     
     let margins = self.mapView.layoutMarginsGuide
     
     button.translatesAutoresizingMaskIntoConstraints = false
-    button.widthAnchor.constraint(equalTo: margins.widthAnchor, multiplier: 0.6).isActive = true
-    button.heightAnchor.constraint(equalToConstant: 60).isActive = true
+    button.widthAnchor.constraint(equalToConstant: 337.4).isActive = true
+    button.heightAnchor.constraint(equalToConstant: 97.6).isActive = true
     button.centerXAnchor.constraint(equalTo: margins.centerXAnchor).isActive = true
     button.centerYAnchor.constraint(equalTo: margins.centerYAnchor, constant: -250).isActive = true
     
