@@ -29,6 +29,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
   var centralMarker = GMSMarker()
   var cancelReportBtn: UIButton!
   var rideBtn: RideRequestButton!
+  var currentDestination: GMSPlace?
   var ignoredPoints = [CLLocationCoordinate2D(latitude: -15.811014, longitude: -47.987146
 )]
   lazy var reportCenterX = reportBtn.centerXAnchor.constraint(equalTo: self.view.layoutMarginsGuide.centerXAnchor)
@@ -71,6 +72,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
   }
   
   func directRide(to destination: GMSPlace) {
+    self.currentDestination = destination
     let originString = "\(indieWareHouse.latitude),\(indieWareHouse.longitude)"
     
     let destinationString = "\(destination.coordinate.latitude),\(destination.coordinate.longitude)"
@@ -96,6 +98,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 self.line.strokeColor = .green
               } else {
                 self.line.strokeColor = .red
+                let marker = GMSMarker()
+                marker.position = CLLocationCoordinate2D(latitude: ignored.latitude, longitude: ignored.longitude)
+                marker.title = "Inacessível"
+                marker.icon = #imageLiteral(resourceName: "rampa_nope")
+                marker.map = self.mapView
                 break
               }
             }
@@ -108,7 +115,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         let marker = GMSMarker()
         marker.position = destination.coordinate
         marker.title = "Destination"
-        marker.snippet = "UCB"
+//        marker.snippet = "UCB"
         marker.map = self.mapView
       }
     }
@@ -221,6 +228,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     let marker = GMSMarker()
     marker.position = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     marker.map = self.mapView
+    marker.icon = #imageLiteral(resourceName: "rampa_nope")
+    
+    if let currentDestination = self.currentDestination {
+      directRide(to: currentDestination)
+    }
     
     return marker
   }
