@@ -24,7 +24,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
   var mapView: GMSMapView!
   let mapKey = "AIzaSyD1F5N_CVO33hJlbq73xt1Jfjuw4UsLy0o"
   var line: GMSPolyline!
-  var centralMarker: GMSMarker!
+  var centralMarker = GMSMarker()
   var cancelReportBtn: UIButton!
   var ignoredPoints = [CLLocationCoordinate2D(latitude: -15.811014, longitude: -47.987146
 )]
@@ -83,16 +83,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 self.line.strokeColor = .green
               } else {
                 self.line.strokeColor = .red
-                let marker = GMSMarker()
-                marker.position = CLLocationCoordinate2D(latitude: -15.811014,
-                                                         longitude: -47.987146)
-                marker.title = "Destination"
-                marker.snippet = "UCB"
-                marker.map = self.mapView
-                print("não pode pintar 👨‍✈️")
+                break
+//                let marker = GMSMarker()
+//                marker.position = CLLocationCoordinate2D(latitude: -15.811014,
+//                                                         longitude: -47.987146)
+//                marker.title = "Destination"
+//                marker.snippet = "UCB"
+//                marker.map = self.mapView
+
               }
-              self.line.map = self.mapView
             }
+            self.line.map = self.mapView
           } else {
             print("lol wat 💁🏻‍♀️")
           }
@@ -129,25 +130,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
   }
   
-  func addReport()  {
-    let addReportBtn = UIButton(type: .custom)
-    addReportBtn.setTitle("Add Report", for: .normal)
-    addReportBtn.setTitleColor(UIColor.white, for: .normal)
-    addReportBtn.backgroundColor = UIColor.blue
-    addReportBtn.frame = CGRect(x: view.frame.width * 0.8, y: -view.frame.height * 0.8, width: 120, height: 100)
-    addReportBtn.addTarget(self, action: #selector(pressedAdd(sender:)), for: .touchUpInside)
-    
-    self.view.addSubview(addReportBtn)
-    
-    addReportBtn.translatesAutoresizingMaskIntoConstraints = false
-    let margins = self.mapView.layoutMarginsGuide
-    addReportBtn.bottomAnchor.constraint(equalTo: margins.bottomAnchor,
-                                         constant: -100).isActive = true
-    addReportBtn.leftAnchor.constraint(equalTo: margins.leftAnchor,
-                                       constant: -20).isActive = true
-    
-    
-  }
   func cancelReport() {
     cancelReportBtn = UIButton(type: .custom)
     cancelReportBtn.setTitle("Cancel", for: .normal)
@@ -169,8 +151,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
   }
   
   @objc func pressed(sender: UIButton!) {
+    guard showMarker else {
+      showMarker = true
+      placeMarkerOnCenter(centerMapCoordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
+      return
+    }
+    
 
-    self.showMarker = true
     let marker = createMarker(latitude: latitude, longitude: longitude)
     self.ignoredPoints.append(marker.position)
 //
@@ -182,14 +169,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
 
   }
 
-  @objc func pressedAdd(sender: UIButton!) {
-    
-    let marker = createMarker(latitude: latitude, longitude: longitude)
-    self.ignoredPoints.append(marker.position)
-    
-  }
   @objc func pressedCancel() {
     showMarker = false
+    centralMarker.map = nil
 //    for locView in self.view.subviews {
 //      if locView.isKind(of: UIButton.self){
 //        locView.removeFromSuperview()
