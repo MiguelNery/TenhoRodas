@@ -10,7 +10,8 @@ target 'TenhoRodas' do
   pod 'GoogleMaps'
   pod 'GooglePlaces'
   pod 'GooglePlacePicker'
-  pod 'Alamofire' 
+  pod 'Alamofire'
+  pod 'UberRides', '~> 0.9' 
 
   # Pods for TenhoRodas
 

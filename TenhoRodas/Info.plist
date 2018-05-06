@@ -50,5 +50,14 @@
 		<string>googlechromes</string>
 		<string>comgooglemaps</string>
 	</array>
+  <key>UberClientID</key>
+  <string>[EDcpMBIYEfSwahihNO0TcpJ3WGvoNbNH]</string>
+  <key>UberDisplayName</key>
+  <string>[TenhoRodas]</string>
+  <key>LSApplicationQueriesSchemes</key>
+  <array>
+    <string>uber</string>
+    <string>uberauth</string>
+  </array>
 </dict>
 </plist>

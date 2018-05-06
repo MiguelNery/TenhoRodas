@@ -10,6 +10,8 @@ import UIKit
 import GoogleMaps
 import Alamofire
 import GooglePlaces
+import UberRides
+import CoreLocation
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
   
@@ -26,6 +28,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
   var line: GMSPolyline!
   var centralMarker = GMSMarker()
   var cancelReportBtn: UIButton!
+  var rideBtn: RideRequestButton!
   var ignoredPoints = [CLLocationCoordinate2D(latitude: -15.811014, longitude: -47.987146
 )]
   
@@ -49,6 +52,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     setReportBtn()
     cancelReport()
     addSearchRouteButton()
+//    setRideBtn()
   }
   
   override func didReceiveMemoryWarning() {
@@ -106,6 +110,30 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         marker.map = self.mapView
       }
     }
+  }
+  
+  func setDropOffLocation(latitude: Double, longitue: Double) {
+    setRideBtn()
+    let dropoffLocation = CLLocation(latitude: latitude, longitude: longitude)
+    let builder = RideParametersBuilder()
+    builder.dropoffLocation = dropoffLocation
+    builder.dropoffNickname = "Awesome Place"
+    rideBtn.rideParameters = builder.build()
+  }
+  func setRideBtn() {
+    self.rideBtn = RideRequestButton()
+    rideBtn.center = view.center
+    self.view.addSubview(rideBtn)
+    let margins = self.mapView.layoutMarginsGuide
+    rideBtn.translatesAutoresizingMaskIntoConstraints = false
+    
+    rideBtn.bottomAnchor.constraint(equalTo: margins.bottomAnchor,
+                                            constant: -500).isActive = true
+    rideBtn.rightAnchor.constraint(equalTo: margins.rightAnchor,
+                                           constant: -20).isActive = true
+    rideBtn.centerXAnchor.constraint(equalTo: margins.centerXAnchor).isActive = true
+    
+    
   }
   
   func setReportBtn() {
@@ -258,7 +286,10 @@ extension ViewController: GMSAutocompleteViewControllerDelegate {
   // Handle the user's selection.
   func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
     directRide(to: place)
+    setDropOffLocation(latitude: place.coordinate.latitude,
+                       longitue: place.coordinate.longitude)
     dismiss(animated: true, completion: nil)
+  
   }
 }
 
