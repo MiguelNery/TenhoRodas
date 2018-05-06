@@ -39,13 +39,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     mapView.delegate = self
     view = mapView
     
-    let marker = GMSMarker()
-    marker.position = CLLocationCoordinate2D(latitude: ignoredPoints[0].latitude,
-                                             longitude: ignoredPoints[0].longitude)
-    marker.title = "Destination"
-    marker.snippet = "UCB"
-    marker.map = self.mapView
-    
     
   }
   
@@ -53,10 +46,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     super.viewDidLoad()
     locationManager.delegate = self
     locationManager.requestWhenInUseAuthorization()
-    directRide()
     setReportBtn()
     cancelReport()
-    
+    addSearchRouteButton()
   }
   
   override func didReceiveMemoryWarning() {
@@ -64,43 +56,50 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     // Dispose of any resources that can be recreated.
   }
   
-  func directRide() {
+  func directRide(to destination: GMSPlace) {
     let originString = "\(indieWareHouse.latitude),\(indieWareHouse.longitude)"
-    let destination = "-15.8651602,-48.0298947"
     
-    Alamofire.request("https://maps.googleapis.com/maps/api/directions/json?origin=\(originString)&destination=\(destination)&sensor=true&mode=walking&alternatives=true").responseJSON { (response) in
+    let destinationString = "\(destination.coordinate.latitude),\(destination.coordinate.longitude)"
+    
+    Alamofire.request("https://maps.googleapis.com/maps/api/directions/json?origin=\(originString)&destination=\(destinationString)&sensor=true&mode=walking&alternatives=true").responseJSON { (response) in
       
       if let json = response.result.value as? [String: Any] {
-        
+        self.mapView.clear()
         let routes = json["routes"] as! NSArray
         
         for route in routes {
           if let routeDict = route as? NSDictionary {
             let polyline = routeDict["overview_polyline"] as! NSDictionary
             let points = polyline["points"] as! String
-            print(points)
             
             let path = GMSPath(fromEncodedPath: points)
             self.line = GMSPolyline(path: path)
             self.line.strokeWidth = 4.0
             
-            for ignored in self.ignoredPoints {
-              if !GMSGeometryContainsLocation(ignored, path!, true) {
-                self.line.map = self.mapView
-                print("pode pintar 👨‍✈️")
-              } else {
 
+            for ignored in self.ignoredPoints {
+
+              if !GMSGeometryIsLocationOnPathTolerance(ignored, path!, false, 5) {
+                self.line.strokeColor = .green
+              } else {
+                self.line.strokeColor = .red
+                let marker = GMSMarker()
+                marker.position = CLLocationCoordinate2D(latitude: -15.811014,
+                                                         longitude: -47.987146)
+                marker.title = "Destination"
+                marker.snippet = "UCB"
+                marker.map = self.mapView
+                print("não pode pintar 👨‍✈️")
               }
+              self.line.map = self.mapView
             }
           } else {
             print("lol wat 💁🏻‍♀️")
           }
         }
-
         
         let marker = GMSMarker()
-        marker.position = CLLocationCoordinate2D(latitude: -15.8651602,
-                                                 longitude: -48.0298947)
+        marker.position = destination.coordinate
         marker.title = "Destination"
         marker.snippet = "UCB"
         marker.map = self.mapView
@@ -206,6 +205,32 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     return marker
   }
   
+  func addSearchRouteButton() {
+    let button = UIButton(type: .custom)
+    button.frame = CGRect(origin: .zero, size: CGSize(width: 150, height: 100))
+    button.setTitle("Search Route", for: .normal)
+    button.setTitleColor(.black, for: .normal)
+    button.backgroundColor = .yellow
+    
+    self.mapView.addSubview(button)
+    
+    let margins = self.mapView.layoutMarginsGuide
+    
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.widthAnchor.constraint(equalTo: margins.widthAnchor, multiplier: 0.6).isActive = true
+    button.heightAnchor.constraint(equalToConstant: 60).isActive = true
+    button.centerXAnchor.constraint(equalTo: margins.centerXAnchor).isActive = true
+    button.centerYAnchor.constraint(equalTo: margins.centerYAnchor, constant: -250).isActive = true
+    
+    button.addTarget(self, action: #selector(searchRoute), for: .touchUpInside)
+  }
+  
+  @objc func searchRoute() {
+    let autocompleteController = GMSAutocompleteViewController()
+    autocompleteController.delegate = self
+    present(autocompleteController, animated: true, completion: nil)
+  }
+
   func centerCamera() {
     guard let location = mapView.myLocation else {
       fatalError("Could not get user location")
@@ -216,6 +241,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                                               zoom: 16.0)
   }
 }
+
 
 extension ViewController: GMSMapViewDelegate {
   
@@ -238,3 +264,19 @@ extension ViewController: GMSMapViewDelegate {
     centralMarker.map = self.mapView
   }
 }
+extension ViewController: GMSAutocompleteViewControllerDelegate {
+  func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
+    
+  }
+  
+  func wasCancelled(_ viewController: GMSAutocompleteViewController) {
+    dismiss(animated: true, completion: nil)
+  }
+  
+  // Handle the user's selection.
+  func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
+    directRide(to: place)
+    dismiss(animated: true, completion: nil)
+  }
+}
+
