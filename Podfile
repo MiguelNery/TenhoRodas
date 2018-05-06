@@ -1,5 +1,5 @@
 # Uncomment the next line to define a global platform for your project
-# platform :ios, '9.0'
+# platform :ios, '10.0'
 
 source 'https://github.com/CocoaPods/Specs.git'
 
@@ -9,6 +9,9 @@ target 'TenhoRodas' do
   use_frameworks!
   pod 'GoogleMaps'
   pod 'GooglePlaces'
+  pod 'GooglePlacePicker'
+  pod 'Alamofire'
+
   # Pods for TenhoRodas
 
 end
